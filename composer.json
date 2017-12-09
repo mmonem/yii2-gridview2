@@ -1,0 +1,26 @@
+{
+  "name": "mmonem/yii2-gridview2",
+  "type": "yii2-extension",
+  "description": "A wrapper for the original Yii2 GridView with local model Create and Update features",
+  "keywords": ["yii2", "extension", "widget", "gridview", "form", "jquery", "plugin"],
+  "homepage": "https://github.com/mmonem/yii2-gridview2",
+  "license": "BSD-3-Clause",
+  "support": {
+    "issues": "https://github.com/mmonem/yii2-gridview2/issues",
+    "source": "https://github.com/mmonem/yii2-gridview2"
+  },
+  "authors": [
+    {
+      "name": "Mohamed Abdel-Monem",
+      "email": "mmonem@gmail.com"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "~2.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "mmonem\\yii2gridview2\\": ""
+    }
+  }
+}
