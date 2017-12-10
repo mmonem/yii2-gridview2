@@ -13,6 +13,8 @@ class GridView extends \yii\grid\GridView
      */
     public $editColumns = [];
 
+    public $createUrl;
+
     /**
      * Runs the widget.
      */
@@ -35,7 +37,8 @@ class GridView extends \yii\grid\GridView
     public function renderLocalForm() {
         return $this->render('local-form', [
             'dataProvider' => $this->dataProvider,
-            'editColumns' => $this->editColumns
+            'editColumns' => $this->editColumns,
+            'createUrl' => $this->createUrl,
         ]);
     }
 }
