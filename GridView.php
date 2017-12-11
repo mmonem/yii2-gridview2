@@ -1,7 +1,6 @@
 <?php
 
 namespace mmonem\yii2gridview2;
-use yii\helpers\Html;
 
 /**
  *
@@ -12,6 +11,8 @@ class GridView extends \yii\grid\GridView
      * @var bool
      */
     public $editColumns = [];
+
+    public $createUrl;
 
     /**
      * Runs the widget.
@@ -35,7 +36,8 @@ class GridView extends \yii\grid\GridView
     public function renderLocalForm() {
         return $this->render('local-form', [
             'dataProvider' => $this->dataProvider,
-            'editColumns' => $this->editColumns
+            'editColumns' => $this->editColumns,
+            'createUrl' => $this->createUrl,
         ]);
     }
 }
