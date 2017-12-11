@@ -46,7 +46,7 @@ class CreateAction extends Action {
         }
 
         if (!$model->save()) {
-            return ['result' => 'FAILED 4'];
+            return ['result' => 'FAILED 4', 'message' => 'Data validation failed', 'errors' => $model->errors];
         }
 
         return [
