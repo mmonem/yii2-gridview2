@@ -55,7 +55,7 @@ to fix permissions for that new action.
 
 ## Change Log
 
-- **v0.0.1 2017-12-11**
+- **v0.0.2** on 2017-12-11
     - Initial pre-alpha version
 
 ## License
