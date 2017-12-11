@@ -1,7 +1,6 @@
 <?php
 
 namespace mmonem\yii2gridview2;
-use yii\helpers\Html;
 
 /**
  *

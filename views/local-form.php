@@ -11,7 +11,7 @@ use yii\web\View;
 /** @var string[] $editColumns */
 ?>
 <?php
-Modal::begin([
+$modal = Modal::begin([
     'toggleButton' => [
         'label' => '<i class="glyphicon glyphicon-plus"></i>',
         'class' => 'btn btn-sm btn-success'
@@ -26,7 +26,7 @@ Modal::begin([
 $form = ActiveForm::begin(['layout' => 'horizontal']);
 /** @var \yii\db\ActiveRecord $model */
 $fullClassName = $dataProvider->query->modelClass;
-escape
+
 $model = new $fullClassName();
 $modelClassParts = explode('\\', $model->className());
 $modelClassName = $modelClassParts[count($modelClassParts) - 1];
@@ -42,50 +42,36 @@ foreach ($editColumns as $col) {
 }
 $fieldsJs = json_encode($fields);
 
-$csrf = Yii::$app->request->getCsrfToken();
 $formID = $form->id;
 $script2 = <<< JS
     $(document).ready(function(){
+        var request;
+
         $('form#$formID').submit(function(e){
             e.preventDefault();
-            if (!confirm("Sure?")) {
-                return false;
-            }
-            var fields = $fieldsJs;
-            var fieldsData = {};
+            e.stopImmediatePropagation();
             
-            var data = {_csrf: '$csrf'};
-            for(var i = 0; i < fields.length; i++) {
-                var fieldName = fields[i];
-                var selector = '[name="' + fieldName + '"]';
-                var el = $(selector).constructor === Array && $(selector).length > 0 ? $(selector)[0] : $(selector);
-                if (el.is('select')) {
-                    el = el.find(':selected');
-                }
-                fieldsData[fieldName] = el.val();
+            if (request) {
+                request.abort();
             }
             
-            console.log({
-                    "class": '$fullClassName',
-                    "data": fieldsData
-                });
-        
-            $.ajax({
-                dataType: 'json',
-                type: 'POST',
+            request = $.ajax({
+                type: 'post',
                 url: '$createUrl',
-                data: {
-                    "class": '$fullClassName',
-                    "data": fieldsData
-                },
-                success: function(data) {
-//                    location.reload(); // or whatever
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                    console.log(textStatus);
-                    console.log(errorThrown);
-                }
+                data: $(this).serialize()
+            });
+            
+            $(this).find("input, select").prop("disabled", true);
+
+            request.done(function(data) {
+                console.log(data);
+                $('#$modal->id').modal('toggle');
+            });
+            
+            request.fail(function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
             });
             
             return false;
@@ -95,6 +81,8 @@ JS;
 $this->registerJs($script2, View::POS_END);
 ?>
 
+<?=Html::hiddenInput('_csrf', Yii::$app->request->getCsrfToken())?>
+<?=Html::hiddenInput('_modelClass', $fullClassName)?>
 <?php foreach ($editColumns as $col): ?>
     <?php if(is_string($col)): ?>
         <?= $form->field($model, $col)->textInput() ?>
