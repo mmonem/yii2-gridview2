@@ -61,7 +61,7 @@ $script2 = <<< JS
                 data: $(this).serialize()
             });
             
-            $(this).find("input, select").prop("disabled", true);
+//            $(this).find("input, select").prop("disabled", true);
 
             request.done(function(data) {
                 console.log(data);
