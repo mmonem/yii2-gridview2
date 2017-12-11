@@ -86,10 +86,14 @@ $this->registerJs($script2, View::POS_END);
 <?php foreach ($editColumns as $col): ?>
     <?php if(is_string($col)): ?>
         <?= $form->field($model, $col)->textInput() ?>
-    <?php elseif (is_array($col) && isset($col['select'])): ?>
-        <?= $form->field($model, $col['attr'])->dropDownList($col['select']) ?>
-    <?php elseif (is_array($col) && isset($col['radio'])): ?>
-        <?= $form->field($model, $col['attr'])->radioList($col['radio']) ?>
+    <?php elseif (is_array($col)): ?>
+        <?php if (isset($col['select'])): ?>
+            <?= $form->field($model, $col['attr'])->dropDownList($col['select']) ?>
+        <?php elseif (isset($col['radio'])): ?>
+            <?= $form->field($model, $col['attr'])->radioList($col['radio']) ?>
+        <?php elseif (isset($col['hidden'])): ?>
+            <?=Html::activeHiddenInput($model, $col['attr'], ['value' => $col['hidden']])?>
+        <?php endif; ?>
     <?php endif; ?>
 <?php endforeach; ?>
 
